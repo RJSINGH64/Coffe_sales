@@ -1,0 +1,19 @@
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn 
+flask
+dash
+plotly 
+Xgboost
+python-dotenv
+pymongo
+mysql-connector-python
+streamlit
+ydata-profiling
+gunicorn
+ipykernel
+scipy
+ipywidgets
+-e .
