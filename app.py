@@ -2,18 +2,26 @@ import pandas as pd
 import numpy as np
 import pickle
 import streamlit as st
+from logger import logging 
+from exception import ProjectException 
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 import plotly.express as px
 import warnings
+warnings.filterwarnings("ignore")
+
+logging.info(f"importing dataset as dataframe")
 
 # Load your dataset
 data = pd.read_csv('dataset/Cofee Sales dataset.csv')
+logging.info(f"Rows and Columns avialable :{data.shape}")
 
 # Handle duplicates and null values
 data.drop_duplicates(inplace=True)
+logging.info(f"Duplicated Values are {data.duplicated().sum().sum()}")
 data.dropna(inplace=True)
+logging.info(f"droping null values  {data.isnull().sum().sum()}")
 
 # Convert date columns to datetime and extract year, month, day, and weekday
 data['date'] = pd.to_datetime(data['date'])
@@ -22,32 +30,37 @@ data['month'] = data['date'].dt.month
 data['day'] = data['date'].dt.day
 data['hour'] = data['date'].dt.hour
 data['weekday'] = data['date'].dt.weekday
+logging.info(f"Creating new columns day , month , week_day and hour using datetime")
 
 # Prepare the training data
 train_df = data.drop(["date", "datetime", "cash_type"], axis=1)
+logging.info(f"train df column : {list(train_df.columns)}")
 
 # One-hot encode 'coffee_name' and 'card'
 coffee_encoder = OneHotEncoder(sparse_output=False, drop="first")
 encoded_coffee = coffee_encoder.fit_transform(train_df[['coffee_name']])
 coffee_encoded_df = pd.DataFrame(encoded_coffee, columns=[name.replace('coffee_name_', '') for name in coffee_encoder.get_feature_names_out()])
-
+logging.info(f"Applying one hot encoder in this column coffee_name ")
 card_encoder = OneHotEncoder(sparse_output=False, drop="first")
 encoded_card = card_encoder.fit_transform(train_df[['card']])
 card_encoded_df = pd.DataFrame(encoded_card, columns=[name.replace('card_', '') for name in card_encoder.get_feature_names_out()])
-
+logging.info(f"Applying one hot encoder in this column card")
 train_df = pd.concat([train_df.reset_index(drop=True), coffee_encoded_df.reset_index(drop=True), card_encoded_df.reset_index(drop=True)], axis=1)
 train_df = train_df.drop(['coffee_name', 'card'], axis=1)
 
 # Define features and target
 X = train_df.drop("money", axis=1)
 y = train_df["money"]
+logging.info(f"creating independent and dependent feature as x and y")
 
 # Split the dataset
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+logging.info(f"Spliting x train and y train using train test split")
 
 # Train the RandomForestRegressor and save it
 model = RandomForestRegressor()
 model.fit(X_train, y_train)
+
 
 # Save the model and encoders
 with open('model.pkl', 'wb') as model_file:
@@ -59,6 +72,8 @@ with open('coffee_encoder.pkl', 'wb') as coffee_file:
 with open('card_encoder.pkl', 'wb') as card_file:
     pickle.dump(card_encoder, card_file)
 
+logging.info(f"saving best model and encoder as pickle file")
+logging.info(f"creating dashboard app using streamlit")
 # Streamlit app configuration
 st.set_page_config(page_title='Coffee Sales Prediction', layout='wide')
 
@@ -87,7 +102,7 @@ with open('coffee_encoder.pkl', 'rb') as coffee_file:
 
 with open('card_encoder.pkl', 'rb') as card_file:
     card_encoder = pickle.load(card_file)
-
+logging.info(f"loading best model and encoding pickle file")
 # Sidebar for user input
 st.sidebar.title('Coffee Sales App')
 st.sidebar.markdown("""
@@ -101,6 +116,7 @@ st.sidebar.markdown("""
 
 options = st.sidebar.radio('Select Option:', ['Prediction', 'Analysis'])
 
+logging.info(f"prediction started ")
 # Prediction Section
 if options == 'Prediction':
     st.title('**Coffee Sales Prediction**')
@@ -124,14 +140,14 @@ if options == 'Prediction':
     input_data[X.columns.get_loc('month')] = selected_month
     input_data[X.columns.get_loc('hour')] = selected_hour
     input_data[X.columns.get_loc('weekday')] = weekday_num
-
-    # Predicting the sales
+    
     if st.button('**Predict Sales Price**'):
         prediction = model.predict([input_data])
         st.success(f'The predicted sales price is: {prediction[0]:.2f}')  # No dollar sign
-
+        logging.info(f"Sale predicted sucessfully ")
 # Analysis Section
 elif options == 'Analysis':
+    logging.info(f"data visualization started")
     st.title('**Coffee Sales Analysis Dashboard**')
     st.write("**Explore the coffee sales data through visualizations.**")
 
@@ -147,3 +163,4 @@ elif options == 'Analysis':
     st.plotly_chart(fig2)
 
     # Add more analysis options here as needed
+    logging.info(f" data plotted sucessfully")

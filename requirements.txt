@@ -16,4 +16,5 @@ gunicorn
 ipykernel
 scipy
 ipywidgets
+gunicorn
 -e .
