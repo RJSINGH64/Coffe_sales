@@ -4,19 +4,19 @@ import pickle
 import streamlit as st
 from logger import logging 
 from exception import ProjectException 
-from data_ingestion import DataIngestion
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 import plotly.express as px
 import warnings
+import os , sys
+
 warnings.filterwarnings("ignore")
 
 logging.info(f"importing dataset as dataframe")
 
- # Load your dataset
-obj= DataIngestion() #instance for class 
-data = obj.initiate_data_ingestion()
+file_path =os.path.join(os.getcwd() , 'dataset/Cofee Sales dataset.csv')
+data=pd.read_csv(file_path)
 logging.info(f"Rows and Columns avialable :{data.shape}")
 
 # Handle duplicates and null values
