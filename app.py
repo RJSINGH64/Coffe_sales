@@ -14,9 +14,9 @@ warnings.filterwarnings("ignore")
 
 logging.info(f"importing dataset as dataframe")
 
-# Load your dataset
+ # Load your dataset
 obj= DataIngestion() #instance for class 
-data = obj.initiate_data_ingestion() 
+data = obj.initiate_data_ingestion()
 logging.info(f"Rows and Columns avialable :{data.shape}")
 
 # Handle duplicates and null values
