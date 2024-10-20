@@ -1,6 +1,6 @@
 from config import mongo_client 
 from logger import logging
-from utils.exception import ProjectException
+from exception import ProjectException
 import pandas as pd
 import numpy as np
 import os , sys

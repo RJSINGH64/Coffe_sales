@@ -162,3 +162,5 @@ cython_debug/
 #.idea/
 #projects files to ignore
 coffee_env
+logs
+artifacts

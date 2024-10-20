@@ -4,6 +4,7 @@ import pickle
 import streamlit as st
 from logger import logging 
 from exception import ProjectException 
+from data_ingestion import DataIngestion
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
@@ -14,7 +15,8 @@ warnings.filterwarnings("ignore")
 logging.info(f"importing dataset as dataframe")
 
 # Load your dataset
-data = pd.read_csv('dataset/Cofee Sales dataset.csv')
+obj= DataIngestion() #instance for class 
+data = obj.initiate_data_ingestion() 
 logging.info(f"Rows and Columns avialable :{data.shape}")
 
 # Handle duplicates and null values
@@ -63,16 +65,16 @@ model.fit(X_train, y_train)
 
 
 # Save the model and encoders
-with open('model.pkl', 'wb') as model_file:
+with open('artifacts/model/model.pkl', 'wb') as model_file:
     pickle.dump(model, model_file)
 
-with open('coffee_encoder.pkl', 'wb') as coffee_file:
+with open('artifacts/transformation/coffee_encoder.pkl', 'wb') as coffee_file:
     pickle.dump(coffee_encoder, coffee_file)
 
-with open('card_encoder.pkl', 'wb') as card_file:
+with open('artifacts/transformation/card_encoder.pkl', 'wb') as card_file:
     pickle.dump(card_encoder, card_file)
 
-logging.info(f"saving best model and encoder as pickle file")
+logging.info(f"All pickle files saved inside artifact folder")
 logging.info(f"creating dashboard app using streamlit")
 # Streamlit app configuration
 st.set_page_config(page_title='Coffee Sales Prediction', layout='wide')
@@ -94,15 +96,16 @@ st.markdown(
 )
 
 # Load the model and encoders
-with open('model.pkl', 'rb') as model_file:
+with open('artifacts/model/model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
-with open('coffee_encoder.pkl', 'rb') as coffee_file:
+with open('artifacts/transformation/coffee_encoder.pkl', 'rb') as coffee_file:
     coffee_encoder = pickle.load(coffee_file)
 
-with open('card_encoder.pkl', 'rb') as card_file:
+with open('artifacts/transformation/card_encoder.pkl', 'rb') as card_file:
     card_encoder = pickle.load(card_file)
-logging.info(f"loading best model and encoding pickle file")
+logging.info(f"loading pickle files........")
+
 # Sidebar for user input
 st.sidebar.title('Coffee Sales App')
 st.sidebar.markdown("""
@@ -144,7 +147,7 @@ if options == 'Prediction':
     if st.button('**Predict Sales Price**'):
         prediction = model.predict([input_data])
         st.success(f'The predicted sales price is: {prediction[0]:.2f}')  # No dollar sign
-        logging.info(f"Sale predicted sucessfully ")
+        logging.info(f"Predicted Sale Price for {selected_coffee} is  {prediction[0]:.2f}")
 # Analysis Section
 elif options == 'Analysis':
     logging.info(f"data visualization started")

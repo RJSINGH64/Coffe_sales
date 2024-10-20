@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from logger import logging 
-from utils.exception import ProjectException
+from exception import ProjectException
 from dotenv import load_dotenv
 import pymongo as pm
 import os , sys
