@@ -6,23 +6,15 @@ from logger import logging
 from exception import ProjectException 
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
-from data_ingestion import DataIngestion
 from sklearn.ensemble import RandomForestRegressor
 import plotly.express as px
 import warnings
 import os , sys
 warnings.filterwarnings("ignore")
 
-
-try:
-    obj = DataIngestion()
-    obj.initiate_data_ingestion()
-except Exception as e:
-    raise ProjectException(e , sys)    
-    
 logging.info(f"importing dataset as dataframe")
 
-file_path =os.path.join(os.getcwd() , 'artifacts/feature_store/coffe_sales.csv')
+file_path =os.path.join(os.getcwd() , 'dataset/Cofee Sales dataset.csv')
 data=pd.read_csv(file_path)
 logging.info(f"Rows and Columns avialable :{data.shape}")
 
