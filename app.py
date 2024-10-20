@@ -6,16 +6,23 @@ from logger import logging
 from exception import ProjectException 
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
+from data_ingestion import DataIngestion
 from sklearn.ensemble import RandomForestRegressor
 import plotly.express as px
 import warnings
 import os , sys
-
 warnings.filterwarnings("ignore")
 
+
+try:
+    obj = DataIngestion()
+    obj.initiate_data_ingestion()
+except Exception as e:
+    raise ProjectException(e , sys)    
+    
 logging.info(f"importing dataset as dataframe")
 
-file_path =os.path.join(os.getcwd() , 'dataset/Cofee Sales dataset.csv')
+file_path =os.path.join(os.getcwd() , 'artifacts/feature_store/coffe_sales.csv')
 data=pd.read_csv(file_path)
 logging.info(f"Rows and Columns avialable :{data.shape}")
 
@@ -63,10 +70,6 @@ logging.info(f"Spliting x train and y train using train test split")
 model = RandomForestRegressor()
 model.fit(X_train, y_train)
 
-# Create artifacts directory if not exist
-artifact_dir = "artifacts"
-
-os.makedirs(artifact_dir , exist_ok=True)
 
 # Save the model and encoders
 with open('artifacts/model.pkl', 'wb') as model_file:
