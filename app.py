@@ -63,15 +63,19 @@ logging.info(f"Spliting x train and y train using train test split")
 model = RandomForestRegressor()
 model.fit(X_train, y_train)
 
+# Create artifacts directory if not exist
+artifact_dir = "artifacts"
+
+os.makedirs(artifact_dir , exist_ok=True)
 
 # Save the model and encoders
-with open('artifacts/model/model.pkl', 'wb') as model_file:
+with open('artifacts/model.pkl', 'wb') as model_file:
     pickle.dump(model, model_file)
 
-with open('artifacts/transformation/coffee_encoder.pkl', 'wb') as coffee_file:
+with open('artifacts/coffee_encoder.pkl', 'wb') as coffee_file:
     pickle.dump(coffee_encoder, coffee_file)
 
-with open('artifacts/transformation/card_encoder.pkl', 'wb') as card_file:
+with open('artifacts/card_encoder.pkl', 'wb') as card_file:
     pickle.dump(card_encoder, card_file)
 
 logging.info(f"All pickle files saved inside artifact folder")
@@ -96,13 +100,13 @@ st.markdown(
 )
 
 # Load the model and encoders
-with open('artifacts/model/model.pkl', 'rb') as model_file:
+with open('artifacts/model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
-with open('artifacts/transformation/coffee_encoder.pkl', 'rb') as coffee_file:
+with open('artifacts/coffee_encoder.pkl', 'rb') as coffee_file:
     coffee_encoder = pickle.load(coffee_file)
 
-with open('artifacts/transformation/card_encoder.pkl', 'rb') as card_file:
+with open('artifacts/card_encoder.pkl', 'rb') as card_file:
     card_encoder = pickle.load(card_file)
 logging.info(f"loading pickle files........")
 
