@@ -12,8 +12,11 @@ import warnings
 import os , sys
 warnings.filterwarnings("ignore")
 
-logging.info(f"importing dataset as dataframe")
+#Creating Directory if not avialable 
+os.makedirs("artifacts" , exist_ok=True)
 
+
+logging.info(f"importing dataset as dataframe")
 file_path =os.path.join(os.getcwd() , 'dataset/Cofee Sales dataset.csv')
 data=pd.read_csv(file_path)
 logging.info(f"Rows and Columns avialable :{data.shape}")
