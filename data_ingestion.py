@@ -16,7 +16,7 @@ class DataIngestion:
            df = pd.DataFrame(mongo_client['Coffee']["Sales"].find())
            logging.info(f"Rows {df.shape[0]} Columns {df.shape[1]} Available after droping _id" )
            if "_id" in df.columns:
-               df.drop("_id" , axis=1 , inplace=True)
+               df.drop("_id" , axis=1 , inplace=True) #removing unwanted column from dataset 
            artifact_feature_store="artifacts/feature_store"
            os.makedirs(artifact_feature_store, exist_ok=True)
            logging.info(f'Initiate data ingestion Pipeline')

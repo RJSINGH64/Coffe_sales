@@ -1,6 +1,6 @@
 from config import mongo_client # importing logging from  my Project Package
 import pandas as pd
-from utils.exception import ProjectException  # importing  Execption from  my Project Package
+from exception import ProjectException  # importing  Execption from  my Project Package
 from logger import logging
 import os ,sys
 

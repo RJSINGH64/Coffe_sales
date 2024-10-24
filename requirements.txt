@@ -6,7 +6,8 @@ seaborn
 flask
 dash
 plotly 
-Xgboost
+xgboost
+Pillow
 python-dotenv
 pymongo
 mysql-connector-python
