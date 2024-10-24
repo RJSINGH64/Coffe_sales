@@ -173,9 +173,10 @@ elif options == 'Analysis':
     
     logging.info(f"data visualization started")
     
-    # Assuming 'top_coffee_sales' is your DataFrame with the coffee sales data
+   # Assuming 'top_coffee_sales' is your DataFrame with the coffee sales data
     # 'top_coffee_sales' is a Series with coffee names as index and their frequencies as values
     top_coffee_sales=df["coffee_name"].value_counts()
+    
     
    # Convert the 'top_coffee_sales' Series into a DataFrame for Plotly
     top_coffee_sales_df = pd.DataFrame({
@@ -188,7 +189,9 @@ elif options == 'Analysis':
              x='Frequency', 
              y='Coffee', 
              orientation='h', 
-             color='Coffee' )
+             color='Coffee' ,
+             title="<b>Coffee Sales by Product<b>"
+             )
 
     # Update layout to make x and y labels bold and ensure all ticks are shown
     fig.update_layout(
@@ -443,13 +446,13 @@ elif options == 'Analysis':
     # Show the plot
     st.plotly_chart(fig)
 
-    import streamlit as st
+    
 
-# Title of the app
-st.title("Coffee Sales Analysis Project Report")
+    # Title of the app
+    st.title("Coffee Sales Analysis Project Report")
 
-# Input box for user to add text for the project report (editable)
-project_report = st.text_area(
+    # Input box for user to add text for the project report (editable)
+    project_report = st.text_area(
     "Project Report Details Here: It will create Report",
     """This project analyzes the distribution of coffee sales across different types of coffee. 
 
@@ -510,9 +513,9 @@ These findings can support decisions in:
 """
 )
 
-# Display the project report
-if project_report:
-    st.markdown(project_report)
+    # Display the project report
+    if project_report:
+        st.markdown(project_report)
     # Footer with "Created by Rajat Singh at Unified Mentor"
     st.markdown("***")  # Add a horizontal line for separation
     st.markdown(
