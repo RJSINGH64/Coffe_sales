@@ -34,14 +34,14 @@ This README provides a step-by-step guide to deploy the Coffee Sales Prediction 
 
 ## Setup Instructions
 
-0. **Create Python environment 3.12 and Activate it**
+0. **Create Python environment 3.9 and Activate it**
    - For this Project 
 
 1. **Clone the Repository**
    - Clone the project repository from GitHub to your local machine.
 
 2. **Create a Virtual Environment (Optional)**
-   - Set up a Python  environment 3.9 to manage dependencies. 
+   - Set up a Python  environment 3.12 to manage dependencies. 
 
 3. **Install Dependencies**
    - Use the provided `requirements.txt` to install necessary packages.

@@ -65,16 +65,15 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 logging.info(f"Spliting x train and y train using train test split")
 
 param_grid = {
-    'subsample': 0.9,
-    'n_estimators': 100,
-    'max_depth': 5,
-    'learning_rate': 0.2,
-    'gamma': 0,
-    'colsample_bytree': 0.8
+    'subsample': 0.9, 
+     'n_estimators': 50, 
+     'max_depth': 7, 
+     'learning_rate': 0.15, 
+     'colsample_bytree': 0.6
 }
 
 # Train the XGBRegressor with the specified hyperparameters
-model = XGBRegressor(**param_grid)  
+model = XGBRegressor(**param_grid)
 model.fit(X_train, y_train)
 # Save the model and encoders
 with open('artifacts/model.pkl', 'wb') as model_file:
